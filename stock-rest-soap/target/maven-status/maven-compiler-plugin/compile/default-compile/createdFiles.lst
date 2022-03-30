@@ -1,0 +1,9 @@
+com\redhat\FinhubEndpoint.class
+com\redhat\FinhubEndpointService.class
+com\redhat\ObjectFactory.class
+com\redhat\OutputSymbol.class
+org\mycompany\CamelProcessor.class
+com\redhat\InputSymbol.class
+com\redhat\package-info.class
+com\redhat\OutputSymbolList.class
+org\mycompany\Application.class

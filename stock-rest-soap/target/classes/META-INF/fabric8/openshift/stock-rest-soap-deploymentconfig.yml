@@ -1,0 +1,80 @@
+---
+apiVersion: "apps.openshift.io/v1"
+kind: "DeploymentConfig"
+metadata:
+  labels:
+    app: "Stock-REST-SOAP"
+    provider: "fabric8"
+    version: "1.0.0-SNAPSHOT"
+    group: "org.mycompany"
+  name: "stock-rest-soap"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    app: "Stock-REST-SOAP"
+    provider: "fabric8"
+    group: "org.mycompany"
+  strategy:
+    rollingParams:
+      timeoutSeconds: 3600
+    type: "Rolling"
+  template:
+    metadata:
+      labels:
+        rht.prod_ver: "7.8"
+        rht.comp_ver: "1.0.0-SNAPSHOT"
+        rht.prod_name: "Red_Hat_Integration"
+        rht.comp: "Stock-REST-SOAP"
+        com.company: "Red_Hat"
+        app: "Stock-REST-SOAP"
+        provider: "fabric8"
+        version: "1.0.0-SNAPSHOT"
+        group: "org.mycompany"
+    spec:
+      containers:
+      - env:
+        - name: "SPRING_APPLICATION_JSON"
+          value: "{\"server\":{\"tomcat\":{\"max-threads\":1}}}"
+        - name: "KUBERNETES_NAMESPACE"
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.namespace"
+        image: "mycompany/stock-rest-soap:latest"
+        imagePullPolicy: "IfNotPresent"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 180
+          successThreshold: 1
+        name: "spring-boot"
+        ports:
+        - containerPort: 8080
+          name: "http"
+          protocol: "TCP"
+        - containerPort: 9779
+          name: "prometheus"
+          protocol: "TCP"
+        - containerPort: 8778
+          name: "jolokia"
+          protocol: "TCP"
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/actuator/health"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 10
+          successThreshold: 1
+        resources:
+          limits:
+            cpu: "1.0"
+          requests:
+            cpu: "0.2"
+        securityContext:
+          privileged: false
+  triggers:
+  - type: "ConfigChange"

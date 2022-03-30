@@ -1,0 +1,100 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Stock API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/stock/symbol": {
+            "summary": "get company per stock symbol",
+            "description": "get symbols per exchange",
+            "get": {
+                "parameters": [
+                    {
+                        "examples": {
+                            "tsla": {
+                                "value": "tsla"
+                            },
+                            "ibm": {
+                                "value": "ibm"
+                            }
+                        },
+                        "name": "symbol",
+                        "description": "",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Symbol"
+                                },
+                                "examples": {
+                                    "tsla": {
+                                        "value": {
+                                            "currency": "USD",
+                                            "description": "Tesla, Inc",
+                                            "displaySymbol": "tsla",
+                                            "symbol": "tsla",
+                                            "type": "public"
+                                        }
+                                    },
+                                    "ibm": {
+                                        "value": {
+                                            "currency": "USD",
+                                            "description": "IBM, Inc",
+                                            "displaySymbol": "IBM",
+                                            "symbol": "IBM",
+                                            "type": "public"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "return company info"
+                    }
+                },
+                "operationId": "getsymbolperexchange",
+                "summary": "get symbol per exchange"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Symbol": {
+                "title": "Root Type for Symbol",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "displaySymbol": {
+                        "type": "string"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "currency": "USD",
+                    "description": "SP FUNDS DOW JONES GLOBAL SU",
+                    "displaySymbol": "SPSK",
+                    "symbol": "SPSK",
+                    "type": "ETP"
+                }
+            }
+        }
+    }
+}

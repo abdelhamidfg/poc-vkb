@@ -1,0 +1,10 @@
+com\redhat\ContactResponse.class
+com\redhat\ObjectFactory.class
+com\redhat\ContactInfo.class
+org\mycompany\LocationRoute.class
+com\redhat\LocationDetailService.class
+org\mycompany\LocationRoute$1.class
+com\redhat\package-info.class
+com\redhat\Contact.class
+com\redhat\LocationDetailServicePortType.class
+org\mycompany\Application.class

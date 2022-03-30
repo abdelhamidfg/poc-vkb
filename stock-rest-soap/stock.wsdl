@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://redhat.com" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://redhat.com">
+
+	<wsdl:types>
+		<xs:schema targetNamespace="http://redhat.com">
+			<xs:element name="inputSymbol">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="xs:string" name="exchange" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OutputSymbol">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element type="xs:string" name="currency" />
+						<xs:element type="xs:string" name="description" />
+						<xs:element type="xs:string" name="displaySymbol" />
+						<xs:element type="xs:string" name="symbol" />
+						<xs:element type="xs:string" name="type" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="outputSymbolList">
+			<xs:complexType>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="stockSymbol" element="tns:OutputSymbol" />
+				</xs:sequence>
+			</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl:types>
+
+
+<!--Define input and output parameters -->
+	<wsdl:message name="inputSymbol">
+		<wsdl:part name="in" element="tns:inputSymbol" />
+	</wsdl:message>
+	<wsdl:message name="outputSympolRes">
+		<wsdl:part name="out" element="tns:OutputSymbol" />
+	</wsdl:message>
+
+<!--Define port definition -->
+	<wsdl:portType name="finhubEndpoint">
+		<wsdl:operation name="getStocksPerSymbol">
+			<wsdl:input message="tns:inputSymbol" />
+			<wsdl:output message="tns:outputSympolRes" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+<!--Bind Soap operation and service -->
+	<wsdl:binding name="finhubBinding" type="tns:finhubEndpoint">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getStocksPerSymbol">
+			<soap:operation soapAction="http://redhat.com"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="in" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="out" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+<!--Define service -->
+	<wsdl:service name="finhubEndpointService">
+		<wsdl:port name="finhubEndpoint" binding="tns:finhubBinding">
+			<soap:address location="http://localhost:8080/finhub" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:osgi="http://www.springframework.org/schema/osgi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.8.3.xsd">
+    <cxf:cxfEndpoint address="/finhub" endpointName="a:finhubEndpoint"
+        id="CXFTest" serviceClass="com.redhat.FinhubEndpoint"
+        serviceName="a:finhubEndpointService" wsdlURL="stock.wsdl" xmlns:a="http://redhat.com">
+        <cxf:properties>
+            <entry key="dataFormat" value="POJO"/>
+        </cxf:properties>
+    </cxf:cxfEndpoint>
+    <bean class="org.mycompany.CamelProcessor" id="processor" scope="singleton"/>
+    <camelContext id="camelId" streamCache="true" xmlns="http://camel.apache.org/schema/spring">
+        <camel:route id="get">
+            <camel:from id="_from1" uri="cxf:bean:CXFTest"/>
+            <camel:log id="_log1" message="opeartion [${header.operationName}], got message ${body}"/>
+           
+            <camel:process id="_process1" ref="processor"/>
+            <camel:setBody id="_setBody1">
+                <camel:simple>${null}</camel:simple>
+            </camel:setBody>
+             
+            <camel:removeHeaders id="_removeHeaders1" pattern="CamelHttp*"/>
+            <camel:log id="_log1" message="symbol=${property.symbol}"/>
+             <camel:setHeader headerName="CamelHttpQuery">
+                   <camel:simple>symbol=${property.symbol}</camel:simple> 
+             </camel:setHeader>
+            <camel:to id="_to2" uri="https4://{{rest-endpoint}}?bridgeEndpoint=true&amp;httpMethod=GET"/>
+            <camel:unmarshal id="_unmarshal1">
+                <camel:json library="Jackson" unmarshalTypeName="com.redhat.OutputSymbol"/>
+            </camel:unmarshal>
+            <camel:log id="_log1?showAll=true" message="after unmarshalling ${body} "/>
+        </camel:route>
+    </camelContext>
+</beans>
