@@ -27,7 +27,7 @@
              <camel:setHeader headerName="CamelHttpQuery">
                    <camel:simple>symbol=${property.symbol}</camel:simple> 
              </camel:setHeader>
-            <camel:to id="_to2" uri="https4://{{rest-endpoint}}?bridgeEndpoint=true&amp;httpMethod=GET"/>
+            <camel:to id="_to2" uri="http4://{{rest-endpoint}}?bridgeEndpoint=true&amp;httpMethod=GET"/>
             <camel:unmarshal id="_unmarshal1">
                 <camel:json library="Jackson" unmarshalTypeName="com.redhat.OutputSymbol"/>
             </camel:unmarshal>
