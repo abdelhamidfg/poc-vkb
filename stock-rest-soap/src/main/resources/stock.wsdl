@@ -7,13 +7,13 @@
 
 	<wsdl:types>
 		<xs:schema targetNamespace="http://redhat.com">
-			<xs:element name="inputSymbol">
+			 <xs:element name="inputSymbol">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element type="xs:string" name="exchange" />
+						<xs:element form="qualified" minOccurs="0" type="xs:string" name="symbol" />
 					</xs:sequence>
 				</xs:complexType>
-			</xs:element>
+			 </xs:element>
 			<xs:element name="OutputSymbol">
 				<xs:complexType>
 					<xs:sequence>
@@ -38,17 +38,17 @@
 
 
 <!--Define input and output parameters -->
-	<wsdl:message name="inputSymbol">
+	<wsdl:message name="inputSymbolReq">
 		<wsdl:part name="in" element="tns:inputSymbol" />
 	</wsdl:message>
 	<wsdl:message name="outputSympolRes">
-		<wsdl:part name="out" element="tns:OutputSymbol" />
+		<wsdl:part name="out" element="tns:OutputSymbol"  />
 	</wsdl:message>
 
 <!--Define port definition -->
 	<wsdl:portType name="finhubEndpoint">
 		<wsdl:operation name="getStocksPerSymbol">
-			<wsdl:input message="tns:inputSymbol" />
+			<wsdl:input message="tns:inputSymbolReq" />
 			<wsdl:output message="tns:outputSympolRes" />
 		</wsdl:operation>
 	</wsdl:portType>
