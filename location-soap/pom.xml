@@ -96,11 +96,7 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-arquillian</artifactId>
-      <scope>test</scope>
-    </dependency>
+     
   </dependencies>
   <repositories>
     <repository>
@@ -202,22 +198,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>4.3.1</version>
-
-        <!-- Connect fabric8:resource to the lifecycle phases -->
-        <executions>
-            <execution>
-            <id>fabric8</id>
-            <goals>
-                <goal>resource</goal>
-                <goal>build</goal>
-            </goals>
-            </execution>
-        </executions>
-      </plugin>
+     
       <plugin>
 		  <groupId>org.apache.camel</groupId>
 		  <artifactId>camel-restdsl-swagger-plugin</artifactId>
